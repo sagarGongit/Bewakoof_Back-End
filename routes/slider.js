@@ -1,8 +1,9 @@
 const express = require("express");
 const sliderModel = require("../models/sliders");
+const RoleChecker = require("../middlewares/roleChecker");
 const route = express.Router();
 
-route.post("/add-slide", async (req, res) => {
+route.post("/add-slide", RoleChecker(["admin", "seller"]), async (req, res) => {
   try {
     const newSlide = await sliderModel.create({ ...req.body });
     res.json({
