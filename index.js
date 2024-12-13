@@ -1,9 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const session = require('express-session');
+const session = require("express-session");
 var GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
+const MongoStore = require("connect-mongo");
 const Mongo_Connection = require("./config/db");
 const userRoute = require("./routes/user");
 const cartRoute = require("./routes/cart");
@@ -13,7 +14,6 @@ const orderRoute = require("./routes/order");
 const slideRoute = require("./routes/slider");
 const discountbannerRoute = require("./routes/discountsell");
 const Authorization = require("./middlewares/authorization");
-
 
 const app = express();
 
@@ -59,7 +59,15 @@ passport.deserializeUser((id, done) => {
   });
 });
 app.use(
-  session({ secret: "secretKey", resave: false, saveUninitialized: true })
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+    }),
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
