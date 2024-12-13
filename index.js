@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+var GoogleStrategy = require("passport-google-oauth20").Strategy;
+const passport = require("passport");
 const Mongo_Connection = require("./config/db");
 const userRoute = require("./routes/user");
 const cartRoute = require("./routes/cart");
@@ -10,6 +12,7 @@ const orderRoute = require("./routes/order");
 const slideRoute = require("./routes/slider");
 const discountbannerRoute = require("./routes/discountsell");
 const Authorization = require("./middlewares/authorization");
+
 
 const app = express();
 
