@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const findOrCreate = require("mongoose-findorcreate");
 const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema(
   {
+    googleId: { type: String, required: true, unique: true },
     name: {
       type: String,
       required: true,
@@ -14,6 +16,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    gender: { type: String, enum: ["male", "female", "transgender"] },
     age: {
       type: Number,
       validate: {
@@ -41,6 +44,8 @@ const UserSchema = new mongoose.Schema(
   },
   { versionKey: false, timestamps: true }
 );
+
+UserSchema.plugin(findOrCreate);
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {

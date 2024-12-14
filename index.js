@@ -14,6 +14,7 @@ const orderRoute = require("./routes/order");
 const slideRoute = require("./routes/slider");
 const discountbannerRoute = require("./routes/discountsell");
 const Authorization = require("./middlewares/authorization");
+const userModel = require("./models/user");
 
 const app = express();
 
@@ -44,19 +45,33 @@ passport.use(
       callbackURL: process.env.REDIRECT_URI,
     },
     function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
+      userModel.findOrCreate(
+        {
+          googleId: profile.id,
+          name: `${profile.name.givenName} ${profile.name.familyName}`,
+          email: "example@gmail.com",
+          password: "$%$@@123",
+          age: "26",
+        },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
     }
   )
 );
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await userModel.findById(id).exec();
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
 });
 app.use(
   session({
