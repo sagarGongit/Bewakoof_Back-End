@@ -45,7 +45,7 @@ route.post("/login", async (req, res) => {
       });
     }
     var token = jwt.sign(
-      { userID: user._id, role: user.role },
+      { userID: user._id, role: user.role, username: user.name },
       process.env.SECRET_KEY,
       {
         expiresIn: "1h",
@@ -56,6 +56,7 @@ route.post("/login", async (req, res) => {
       token: token,
       userid: user._id,
       role: user.role,
+      username: user.name,
     });
   } catch (error) {
     res.status(500).json({

@@ -21,6 +21,7 @@ const Authorization = async (req, res, next) => {
       if (decoded) {
         req.userID = decoded.userID;
         req.role = decoded.role;
+        req.username = decoded.username;
         next();
       }
     });
