@@ -28,8 +28,8 @@ app.use("/cart", Authorization, cartRoute);
 app.use("/product", Authorization, productRoute);
 app.use("/wishlist", Authorization, wishlistRoute);
 app.use("/order", Authorization, orderRoute);
-app.use("/slide", Authorization, slideRoute);
-app.use("/discountsell", Authorization, discountbannerRoute);
+app.use("/slide", slideRoute);
+app.use("/discountsell", discountbannerRoute);
 
 app.get("/", (req, res) => {
   res.json({
