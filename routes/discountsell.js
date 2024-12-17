@@ -1,6 +1,7 @@
 const express = require("express");
 const discountModel = require("../models/discountsell");
 const RoleChecker = require("../middlewares/roleChecker");
+const Authorization = require("../middlewares/authorization");
 const route = express.Router();
 
 route.post(
