@@ -5,7 +5,8 @@ const route = express.Router();
 
 route.post(
   "/add/discount-banner",
-  [Authorization, RoleChecker(["admin", "seller"])],
+  Authorization,
+  RoleChecker(["admin", "seller"]),
   async (req, res) => {
     try {
       const discountSell = await discountModel.create({ ...req.body });
@@ -37,7 +38,8 @@ route.get("/discount-banners", async (req, res) => {
 
 route.patch(
   "/update/discount-banners/:id",
-  [Authorization, RoleChecker(["admin", "seller"])],
+  Authorization,
+  RoleChecker(["admin", "seller"]),
   async (req, res) => {
     const bannerid = req.params.id;
     try {
@@ -58,7 +60,8 @@ route.patch(
 
 route.delete(
   "/delete/discount-banners/:id",
-  [Authorization, RoleChecker(["admin", "seller"])],
+  Authorization,
+  RoleChecker(["admin", "seller"]),
   async (req, res) => {
     const bannerid = req.params.id;
     try {

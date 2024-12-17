@@ -6,7 +6,8 @@ const route = express.Router();
 
 route.post(
   "/add-slide",
-  [Authorization, RoleChecker(["admin", "seller"])],
+  Authorization,
+  RoleChecker(["admin", "seller"]),
   async (req, res) => {
     try {
       const newSlide = await sliderModel.create({ ...req.body });
@@ -43,7 +44,8 @@ route.get("/get-sliders", async (req, res) => {
 
 route.patch(
   "/update-slide/:id",
-  [Authorization, RoleChecker(["admin", "seller"])],
+  Authorization,
+  RoleChecker(["admin", "seller"]),
   async (req, res) => {
     const slideid = req.params.id;
     try {
@@ -61,7 +63,8 @@ route.patch(
 
 route.delete(
   "/delete-slide/:id",
-  [Authorization, RoleChecker(["admin", "seller"])],
+  Authorization,
+  RoleChecker(["admin", "seller"]),
   async (req, res) => {
     const slideid = req.params.id;
     try {
