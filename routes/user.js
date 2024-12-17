@@ -67,7 +67,7 @@ route.post("/login", async (req, res) => {
 
 //logout
 
-route.post("/logout", async (req, res) => {
+route.post("/logout", Authorization, async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   try {
     const blacklisted = new blacklistModel({
