@@ -30,12 +30,22 @@ route.post(
   async (req, res) => {
     const sliderid = req.params.id;
     const { imgUrl } = req.body;
+    if (!imgUrl) {
+      return res.status(404).json({
+        message: "image url is required",
+      });
+    }
     try {
       const addSlide = await sliderModel.findOne({ _id: sliderid });
+      if (!addSlide) {
+        return res.status(404).json({
+          message: "slider is not found",
+        });
+      }
       addSlide.imageUrl.push(imgUrl);
+      await addSlide.save();
       res.json({
         message: "slide added successfully",
-        SlideAdded: addSlide,
       });
     } catch (error) {
       res.status(500).json({
