@@ -5,7 +5,7 @@ const Authorization = require("../middlewares/authorization");
 const route = express.Router();
 
 route.post(
-  "/add-slide",
+  "/add-slider",
   Authorization,
   RoleChecker(["admin", "seller"]),
   async (req, res) => {
@@ -14,6 +14,28 @@ route.post(
       res.json({
         message: "slide added successfully",
         newSlide,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+);
+
+route.post(
+  "/add-slide/:id",
+  Authorization,
+  RoleChecker(["admin", "seller"]),
+  async (req, res) => {
+    const sliderid = req.params.id;
+    const { imgUrl } = req.body;
+    try {
+      const addSlide = await sliderModel.findOne({ _id: sliderid });
+      addSlide.imageUrl.push(imgUrl);
+      res.json({
+        message: "slide added successfully",
+        SlideAdded: addSlide,
       });
     } catch (error) {
       res.status(500).json({
